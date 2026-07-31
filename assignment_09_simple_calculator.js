@@ -75,3 +75,116 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// Arithmetic operation functions
+function add(num1, num2) {
+    return num1 + num2;
+}
+
+function subtract(num1, num2) {
+    return num1 - num2;
+}
+
+function multiply(num1, num2) {
+    return num1 * num2;
+}
+
+function divide(num1, num2) {
+    if (num2 === 0) {
+        return 'Error: Cannot divide by zero.';
+    }
+    return num1 / num2;
+}
+
+function modulus(num1, num2) {
+    if (num2 === 0) {
+        return 'Error: Cannot divide by zero.';
+    }
+    return num1 % num2;
+}
+
+function exponentiate(num1, num2) {
+    return Math.pow(num1, num2);
+}
+
+// Display Interactive Menu
+function displayMenu() {
+    console.log('\n==================================');
+    console.log('        SIMPLE CALCULATOR');
+    console.log('==================================');
+    console.log('1. Addition');
+    console.log('2. Subtraction');
+    console.log('3. Multiplication');
+    console.log('4. Division');
+    console.log('5. Modulus');
+    console.log('6. Exponentiation');
+    console.log('7. Quit');
+}
+
+// Helper to format numeric results to 2 decimal places
+function formatResult(val) {
+    return Number.isInteger(val) ? val : val.toFixed(2);
+}
+
+// Main control loop
+function main() {
+    let running = true;
+
+    while (running) {
+        displayMenu();
+        const choice = readlineSync.question('Select an operation (1-7): ');
+
+        if (choice.trim() === '7') {
+            console.log('Goodbye!');
+            running = false;
+            break;
+        }
+
+        if (!['1', '2', '3', '4', '5', '6'].includes(choice.trim())) {
+            console.log('Invalid choice! Please select an operation between 1 and 7.');
+            continue;
+        }
+
+        const num1 = readlineSync.questionFloat('Enter first number: ');
+        const num2 = readlineSync.questionFloat('Enter second number: ');
+
+        let result;
+        let symbol;
+
+        switch (choice.trim()) {
+            case '1':
+                result = add(num1, num2);
+                symbol = '+';
+                break;
+            case '2':
+                result = subtract(num1, num2);
+                symbol = '-';
+                break;
+            case '3':
+                result = multiply(num1, num2);
+                symbol = '*';
+                break;
+            case '4':
+                result = divide(num1, num2);
+                symbol = '/';
+                break;
+            case '5':
+                result = modulus(num1, num2);
+                symbol = '%';
+                break;
+            case '6':
+                result = exponentiate(num1, num2);
+                symbol = '**';
+                break;
+        }
+
+        if (typeof result === 'string') {
+            console.log(result);
+        } else {
+            console.log(`Result: ${num1} ${symbol} ${num2} = ${formatResult(result)}`);
+        }
+    }
+}
+
+main();

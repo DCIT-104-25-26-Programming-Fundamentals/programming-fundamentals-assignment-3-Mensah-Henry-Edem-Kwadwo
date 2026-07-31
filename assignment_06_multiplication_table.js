@@ -60,3 +60,48 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// Helper function to generate and print a single multiplication table from 1 to 12
+function printSingleTable(num) {
+    console.log(`\nMultiplication Table for ${num}:`);
+    for (let i = 1; i <= 12; i++) {
+        console.log(`${num} x ${i} = ${num * i}`);
+    }
+}
+
+// PART A - Single Table
+function generateSingleTable() {
+    const num = readlineSync.questionInt('Enter a number: ');
+    if (isNaN(num) || num <= 0) {
+        console.log('Error: Please enter a positive integer.');
+        return;
+    }
+    printSingleTable(num);
+}
+
+// PART B - Bonus: Tables from 1 to N
+function generateMultipleTables() {
+    const n = readlineSync.questionInt('Enter a number N: ');
+    if (isNaN(n) || n <= 0) {
+        console.log('Error: Please enter a positive integer.');
+        return;
+    }
+
+    for (let i = 1; i <= n; i++) {
+        printSingleTable(i);
+        if (i < n) {
+            console.log('-----------------------------------');
+        }
+    }
+}
+
+function main() {
+    console.log("=== PART A: Single Multiplication Table ===");
+    generateSingleTable();
+
+    console.log("\n=== PART B: Multiplication Tables from 1 to N ===");
+    generateMultipleTables();
+}
+
+main();

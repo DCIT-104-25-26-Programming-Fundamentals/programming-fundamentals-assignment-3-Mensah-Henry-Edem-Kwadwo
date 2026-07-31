@@ -70,3 +70,113 @@
 
 const readlineSync = require('readline-sync');
 
+// Helper function to read a matrix from user input
+function readMatrix(rows, cols, name = "") {
+    if (name) console.log(`\nEnter values for ${name}:`);
+    const matrix = [];
+    for (let i = 0; i < rows; i++) {
+        const line = readlineSync.question(`Enter row ${i + 1}: `);
+        const row = line.trim().split(/\s+/).map(Number);
+        
+        if (row.length !== cols) {
+            console.log(`Warning: Expected ${cols} numbers, but got ${row.length}.`);
+        }
+        matrix.push(row);
+    }
+    return matrix;
+}
+
+// Helper function to print a matrix in a clean, aligned grid format
+function printMatrix(matrix) {
+    for (let i = 0; i < matrix.length; i++) {
+        console.log(matrix[i].join(' '));
+    }
+}
+
+// PART A: Transpose Matrix
+function transposeMatrix(matrix) {
+    const rows = matrix.length;
+    const cols = matrix[0].length;
+    const result = [];
+
+    for (let j = 0; j < cols; j++) {
+        const newRow = [];
+        for (let i = 0; i < rows; i++) {
+            newRow.push(matrix[i][j]);
+        }
+        result.push(newRow);
+    }
+    return result;
+}
+
+// PART B: Add Two Matrices
+function addMatrices(matrixA, matrixB) {
+    const rows = matrixA.length;
+    const cols = matrixA[0].length;
+    const result = [];
+
+    for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < cols; j++) {
+            row.push(matrixA[i][j] + matrixB[i][j]);
+        }
+        result.push(row);
+    }
+    return result;
+}
+
+// PART C: Multiply Two Matrices
+function multiplyMatrices(matrixA, matrixB) {
+    const rowsA = matrixA.length;
+    const colsA = matrixA[0].length;
+    const colsB = matrixB[0].length;
+    const result = [];
+
+    for (let i = 0; i < rowsA; i++) {
+        const row = [];
+        for (let j = 0; j < colsB; j++) {
+            let sum = 0;
+            for (let k = 0; k < colsA; k++) {
+                sum += matrixA[i][k] * matrixB[k][j];
+            }
+            row.push(sum);
+        }
+        result.push(row);
+    }
+    return result;
+}
+
+function main() {
+    console.log("=== PART A: Transpose Matrix ===");
+    const rows = readlineSync.questionInt('Enter number of rows: ');
+    const cols = readlineSync.questionInt('Enter number of columns: ');
+    const matrix = readMatrix(rows, cols);
+
+    console.log('\nOriginal Matrix:');
+    printMatrix(matrix);
+
+    console.log('\nTransposed Matrix:');
+    printMatrix(transposeMatrix(matrix));
+
+    console.log('\n=== PART B: Add Two Matrices ===');
+    const rowsB = readlineSync.questionInt('Enter number of rows: ');
+    const colsB = readlineSync.questionInt('Enter number of columns: ');
+    const matA_add = readMatrix(rowsB, colsB, 'Matrix A');
+    const matB_add = readMatrix(rowsB, colsB, 'Matrix B');
+
+    console.log('\nResult of Addition:');
+    printMatrix(addMatrices(matA_add, matB_add));
+
+    console.log('\n=== PART C: Multiply Two Matrices ===');
+    const rowsA_mult = readlineSync.questionInt('Enter rows for Matrix A: ');
+    const colsA_mult = readlineSync.questionInt('Enter columns for Matrix A (and rows for Matrix B): ');
+    const colsB_mult = readlineSync.questionInt('Enter columns for Matrix B: ');
+
+    const matA_mult = readMatrix(rowsA_mult, colsA_mult, 'Matrix A');
+    const matB_mult = readMatrix(colsA_mult, colsB_mult, 'Matrix B');
+
+    console.log('\nResult of Multiplication:');
+    printMatrix(multiplyMatrices(matA_mult, matB_mult));
+}
+
+main();
